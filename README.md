@@ -240,35 +240,77 @@ In large-scale outage scenarios—such as a sudden city-wide blackout with a sur
 
 ### Features in the Model
 
-Total features: 3
-- **Quantitative features (1)**: 
-  - `OUTAGE.DURATION`: Numeric variable representing the length of time the outage lasted, which may correlate with certain types of causes (e.g., severe weather events typically cause longer outages than equipment failures)
+**Total features: 3**
+  - `Outage Duration`: (Quantative Feature) Numeric variable representing the length of time the outage lasted
+     This may correlate with certain types of causes (e.g., severe weather events typically cause longer outages than equipment failures)
+    
+  - `US State`: (Nominal Feature) Categorical variable representing the state where the outage occurred.
+    Different states have varying infrastructure, regulations, and environmental conditions that influence outage causes.
+    
+  - `Month`: (Norminal Feature) Categorical variable representing the month when the outage occurred
+     This might capture seasonal patterns that might affect outage causes (e.g., storm seasons, high electricity demand periods)
 
-- **Nominal features (2)**:
-  - `U.S._STATE`: Categorical variable representing the state where the outage occurred. Different states have varying infrastructure, regulations, and environmental conditions that influence outage causes.
-  - `MONTH`: Categorical variable representing the month when the outage occurred, which captures seasonal patterns that might affect outage causes (e.g., storm seasons, high electricity demand periods)
-
-### Encoding Methods
-- `U.S._STATE`: One-hot encoded using `OneHotEncoder(drop='first')` to convert this nominal variable into binary features while avoiding multicollinearity by dropping one reference category.
-- `MONTH`: Currently passed through the pipeline without specific encoding. This is a limitation as the model may interpret it as a continuous variable rather than a categorical one.
-- `OUTAGE.DURATION`: Maintained as a raw numeric feature without scaling.
+### Feature Engineering
+- `US State`: One-hot encoded using `OneHotEncoder(drop='first')` to convert this nominal variable into binary features while avoiding multicollinearity by dropping one reference category.
+- `Month`: The month are already labelled nominally (1-12), hence no transforming the data.
+- `Outage Duration`: Maintained as a raw numeric feature without scaling.
 
 These encodings were implemented using a `ColumnTransformer` within a scikit-learn `Pipeline` to ensure proper feature transformation during both training and prediction phases.
 
 ### Model Performance
-- Training Data Performance: ~80% Accuracy
-- Test Data Performance: ~68% Accuracy
-- F1-score: ~0.64
+- **Training Data Performance**: ~80% Accuracy
+- **Test Data Performance**: ~68% Accuracy
+- **F1-score**: ~0.64
 
 ### Model Improvements
-1. Using random forest clf instead of using decision trees, giving us more liberty with the hyperparameters and surity of model
+1. Using random forest classifier instead of using decision trees, giving us more liberty with the hyperparameters and less variance in the model's estimates.
    
-2. **Cross-validation**: Using k-fold cross-validation ensures more reliable performance evaluation across different data subsets, improving generalizability.
+2. **Cross-validation**: Using k-fold cross-validation ensures more reliable performance evaluation across different datasets, and decreasing the chance of overfitting.
    
 3. **Efficient parameter search**: RandomizedSearchCV with `'n'` iterations provided a smart exploration of the hyperparameter space without the computational burden of exhaustive grid search.
 
 
 ## Final Model
+**Our Final model is a RandomForest Classifier pipeline designed to predict the `CAUSE.CATEGORY` of power outages now based on 4 features**
+
+We maintain the first 3 features we use in the baseline model, and on top of that we also use 'Customers Affected' as a new feature. 
+
+### Features:
+ - `Customers Affected`: (Quantative Feature) Numeric variable representing the number of customers affected due to the outage.
+    Some causes of outage might affect a wider area for a longer time hence, customers affected might have a correlation with the outage cause.
+  
+ - `Outage Duration`: (Quantative Feature) Numeric variable representing the length of time the outage lasted
+    
+ - `US State`: (Nominal Feature) Categorical variable representing the state where the outage occurred.
+    
+ - `Month`: (Norminal Feature) Categorical variable representing the month when the outage occurred
+
+### Feature Engineering
+-  'Customers Affected': No scaling the data. `np.nan` is used if this feature has a missing value
+- `US State`: One-hot encoded using `OneHotEncoder(drop='first')` to convert this nominal variable into binary features while avoiding multicollinearity by dropping one reference category.
+- `Month`: The month are already labelled nominally (1-12), hence no transforming the data.
+- `Outage Duration`: Maintained as a raw numeric feature without scaling.
+
+### Model Performance
+- **Training Data Performance**: ~90.2% Accuracy
+- **Test Data Performance**: ~86.1% Accuracy
+- **F1-score**: ~0.84
+
+### Hyperparamters
+We used `RandomizedSearchCV` to find the best `max_depth`, `min_sample_split`, and `criterion` for the RandomForest Classifier
+
+- Ideally, lower `max_depth` is preferred, since higher `max_depth` leads to overfitting.
+- Conversely, a higher `min_sample_split` is set to prevent overfitting.
+- `criterion` measures the quality of the node split (Nodes of DecisionTrees in the RandomForest). It is selected between `gini` and `entropy`.
+
+**Hyperparameters used**:
+- `max_depth` : 20
+- `min_sample_split` : 15
+- `criterion` : gini
+
+These hyperparamters help the model overfit less and perform a better prediction over unseen data.
+
+
 
 ## Fairness Analysis
 <iframe
