@@ -342,12 +342,38 @@ This is the accuracy plotted on the US Map per Climate Region.
   frameborder="0"
 ></iframe>
 
+### Permutation Test on parity of accuracy between Climate Regions
 
+To check whether the the parity of accuracy between these `Climate Regions`, we divided the Climate Regions into two groups. The map below shows. The `red` Climate Regions (lower accuracy) are one group and the `blue` (high accuracy) are another. 
 
+<iframe
+  src="plots/Accuracy_Fairness_by_region.html.html"
+  width="900"
+  height="500"
+  frameborder="0"
+></iframe>
 
+We perform the following **Permutation Test**
+
+**Null Hypothesis** : The classifier's accuracy is the same for both `red` and `blue` climate regions , and any differences are due to chance.
+
+**Alternative Hypothesis** : The classifier's accuracy is higher for `blue` climate regions.
+
+**Test Statistic** : Absolute difference in accuracy (`blue` minus `red`)
+Signiface level : 0.01
+
+#### Results
+
+After running our random permutation test (permuting over 10_000 times), we found the `p-value` of our test statstic to be 0.00.
+
+The plot shows the p-value among the distribution of the permuted test statstics.
 <iframe
   src="plots/fairness_test_permutation.html"
   width="900"
   height="500"
   frameborder="0"
 ></iframe>
+
+Hence we reject the null hypothesis. We conclude that the model has lower accuracy for certain Climate Regions.
+
+This may have occured due to different way data collection method in states of those Climate Regions compared to the others, which the model might not have been able to fit properly.
