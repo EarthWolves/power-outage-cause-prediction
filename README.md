@@ -286,7 +286,7 @@ We maintain the first 3 features we use in the baseline model, and on top of tha
  - `Month`: (Norminal Feature) Categorical variable representing the month when the outage occurred
 
 ### Feature Engineering
--  'Customers Affected': No scaling the data. `np.nan` is used if this feature has a missing value
+-  `Customers Affected`: No scaling the data. `np.nan` is used if this feature has a missing value
 - `US State`: One-hot encoded using `OneHotEncoder(drop='first')` to convert this nominal variable into binary features while avoiding multicollinearity by dropping one reference category.
 - `Month`: The month are already labelled nominally (1-12), hence no transforming the data.
 - `Outage Duration`: Maintained as a raw numeric feature without scaling.
@@ -313,20 +313,40 @@ These hyperparamters help the model overfit less and perform a better prediction
 
 
 ## Fairness Analysis
+One of the themes of our project is focusing on Power Outage trends across different States. 
+
+When the model was tested for it's accuracy among different states, it was noticed that predictions on states belonging to certain regions performed worse than predictions on states belonging to other. Hence we split the dataset into different `Climate Regions` and tested our model accuracy on each of these datasets.
+The accuracy of predictions over `Climate Regions` are plotted below in the graph.
 <iframe
   src="plots/Accuracy_Unfair_Region.html"
   width="800"
   height="380"
   frameborder="0"
 ></iframe>
+
+We notice that `Climate Regions` in the Southern and Western parts are experiencing worse accuracy than the ones in others. However, this is not correlated with the amount of training dataset we had per Climate Region. The plot below shows the datapoints we had per Climate Region.
 <iframe
   src="plots/Datapoints_for_Accuracy_Region.html"
   width="800"
   height="380"
   frameborder="0"
-></iframe>
+  ></iframe>
+  We notice that there are Climate Regions having both different amount datapoints performing worse. For e.g., `West` has more datapoints than `East North Central` however has lower accuracy. Conversely,  `Southwest` has less datapoints than `Northeast` and still expereinces lower accuracy predictions from the model. 
+  Hence we rule out the cause of number of datapoints per `Climate Region` to be a cause for the unfairness.
+
+This is the accuracy plotted on the US Map per Climate Region. 
 <iframe
   src="plots/accuracy_by_climate_region_map.html"
+  width="900"
+  height="500"
+  frameborder="0"
+></iframe>
+
+
+
+
+<iframe
+  src="plots/fairness_test_permutation.html"
   width="900"
   height="500"
   frameborder="0"
