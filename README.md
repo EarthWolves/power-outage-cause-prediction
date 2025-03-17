@@ -148,7 +148,7 @@ The main features that could help us identify the true cause of missingness woul
 
 ### Introducing our Hypothesis
 
-In this analysis, we set out to investigate whether certain factors, such as states, cause categories, and months, influence the duration of power outages in the United States. Specifically, we aimed to test whether the distribution of outage durations is proportionally related to the frequency of outages in different states, cause categories, and months. We hypothesized that certain factors could cause systematic differences in outage durations, suggesting that some regions, causes, or times of the year might experience longer outages than others due to inherent infrastructural or environmental challenges.
+In this analysis, we set out to investigate whether certain factors, such as states, cause categories, and climate categories, influence the duration of power outages in the United States. Specifically, we aimed to test whether the distribution of outage durations is proportionally related to the frequency of outages in different states, cause categories, and climate categories. We hypothesized that certain factors could cause systematic differences in outage durations, suggesting that some regions, causes, or times of the year might experience longer outages than others due to inherent infrastructural or environmental challenges.
 
 When conducting this hypothesis testing, we are making a key assumption: If the system is fair and there is no underlying cause driving differences in outage duration, then states with more outages should, on average, experience longer outage durations. This assumption is based on the idea that, generally speaking, states with more frequent outages might face more systemic challenges (e.g. infrastructure limitations), which could result in longer durations.
 
@@ -200,11 +200,11 @@ Our observed TVD lied in the extreme right tail of the null distribution (obtain
 
 Hence, we **reject the Null hypothesis**. There are likely systematic factors (e.g., infrastructure, severity of weather events, and other causes) that lead to disproportionately longer outages in certain cause categories compared to their outage frequency.
 
-### Hypothesis Testing (Across Month)
+### Hypothesis Testing (Across Climate Categoies)
 
-**Null Hypothesis**: The distribution of power outage durations across different months is proportional to the distribution of the number of outages in each month. Any observed difference (TVD) is due to random variation rather than a true underlying effect.
+**Null Hypothesis**: The distribution of power outage durations across different climate categories is proportional to the distribution of the number of outages in each climate category. Any observed difference (TVD) is due to random variation rather than a true underlying effect.
 
-**Alternative Hypothesis**: The distribution of power outage durations is not proportional to the number of outages in each month.
+**Alternative Hypothesis**: The distribution of power outage durations is not proportional to the number of outages in each climate category.
 
 **Test Statistic**: TVD
 
@@ -215,9 +215,9 @@ Hence, we **reject the Null hypothesis**. There are likely systematic factors (e
   frameborder="0"
 ></iframe>
 
-Our observed TVD did not lie in the extreme right tail of the null distribution (obtained from permutation tests), and the p-value was not sufficiently small. This suggests that the observed difference in outage durations across months is likely due to random variation.
+Our observed TVD did not lie in the extreme right tail of the null distribution (obtained from permutation tests), and the p-value was not sufficiently small. This suggests that the observed difference in outage durations across climate categories is likely due to random variation.
 
-We fail to reject the null hypothesis. The analysis indicates that the outage duration and frequency seem to have a relationship across months, and there is no strong evidence to suggest that certain months cause disproportionately longer outages than would be expected based on the number of outages.
+We fail to reject the null hypothesis. The analysis indicates that the outage duration and frequency seem to have a relationship across climate categoies, and there is no strong evidence to suggest that certain climate category cause disproportionately longer outages than would be expected based on the number of outages.
 
 ### Conclusion
 
@@ -225,7 +225,7 @@ We fail to reject the null hypothesis. The analysis indicates that the outage du
 
 **Across Cause Categories**: We observed that certain causes of outages (e.g., severe weather events) are associated with longer durations, supporting the hypothesis that specific causes lead to more prolonged outages.
 
-**Across Months**: Interestingly, we failed to reject the null hypothesis for months, as the p-value was not sufficiently small, indicating that the variation in outage durations across months is likely due to random variation. This suggests that, unlike states and causes, month-to-month differences in outage duration do not exhibit a strong systematic pattern.
+**Across Climate Category**: Interestingly, we failed to reject the null hypothesis for climate categories, as the p-value was not sufficiently small, indicating that the variation in outage durations across climate categories is likely due to random variation. This suggests that, unlike states and causes, climate category to category differences in outage duration do not exhibit a strong systematic pattern.
 
 
 ## Framing a Prediction Problem 
