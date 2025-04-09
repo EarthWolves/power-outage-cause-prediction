@@ -347,7 +347,7 @@ This is the accuracy plotted on the US Map per Climate Region.
 To check whether the the parity of accuracy between these `Climate Regions`, we divided the Climate Regions into two groups. The map below shows. The `red` Climate Regions (lower accuracy) are one group and the `blue` (high accuracy) are another. 
 
 <iframe
-  src="plots/Accuracy_Fairness_by_region.html.html"
+  src="plots/Accuracy_Fairness_by_region.html"
   width="900"
   height="500"
   frameborder="0"
